@@ -4,14 +4,17 @@
   "description": "School Management Software",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
-    "server": "nodemon server"
+    "start": "nodemon server",
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "both": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Hritique Rungta",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "config": "^3.2.2",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.1.1",
     "jsonwebtoken": "^8.5.1",
