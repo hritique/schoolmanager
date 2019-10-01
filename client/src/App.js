@@ -14,6 +14,9 @@ import Login from './components/pages/Login/Login';
 import AddStudent from './components/pages/Students/addStudent';
 import UpdateStudent from './components/pages/Students/updateStudent';
 
+// Private Routing
+import PrivateRoute from './components/routing/PrivateRoute';
+
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -33,12 +36,12 @@ const App = () => {
     <Provider store={store}>
       <Fragment>
         <Navbar />
-        <SnackbarProvider maxSnack={3}>
+        <SnackbarProvider maxSnack={10}>
           <Alert />
         </SnackbarProvider>
         <Switch>
           <Route path="/login" exact component={Login} />
-          <Route path="/addStudent" exact component={AddStudent} />
+          <PrivateRoute path="/addStudent" exact component={AddStudent} />
           <Route path="/updateStudent" component={UpdateStudent} />
           <Route path="/" exact component={Landing} />
         </Switch>
