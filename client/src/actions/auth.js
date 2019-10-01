@@ -1,4 +1,10 @@
-import { LOGIN_SUCCESS, LOGIN_FAIL, LOAD_USER, AUTH_ERROR } from './types';
+import {
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOAD_USER,
+  AUTH_ERROR,
+  LOGOUT
+} from './types';
 import { setAlert } from './alert';
 import axios from '../axios';
 import setAuthToken from '../utils/setAuthToken';
@@ -26,12 +32,14 @@ export const login = ({ username, password }) => async dispatch => {
   try {
     const response = await axios.post('/auth', { username, password });
 
-    dispatch(setAlert('Login successful', 'success'));
+    dispatch(setAlert('Logged in successfully', 'success'));
 
     dispatch({
       type: LOGIN_SUCCESS,
       payload: response.data
     });
+
+    dispatch(loadUser());
   } catch (error) {
     const errors = error.response.data.errors;
 
@@ -45,4 +53,12 @@ export const login = ({ username, password }) => async dispatch => {
       type: LOGIN_FAIL
     });
   }
+};
+
+export const logout = () => dispatch => {
+  dispatch({
+    type: LOGOUT
+  });
+
+  dispatch(setAlert('Logged out successfully', 'success'));
 };

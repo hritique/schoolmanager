@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import axios from '../../../axios';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Link, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -21,6 +21,12 @@ const Login = props => {
     const { username, password } = formData;
     props.login({ username, password });
   };
+
+  // Redirect if authenticated
+  if (props.isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
+
   return (
     <div className='row'>
       <div className='col-md-6 col-sm-8 mx-auto'>
@@ -65,7 +71,16 @@ const Login = props => {
   );
 };
 
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
 export default connect(
-  null,
-  { setAlert, login }
+  mapStateToProps,
+  { login }
 )(Login);
