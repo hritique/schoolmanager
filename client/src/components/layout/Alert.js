@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withSnackbar } from 'notistack';
 
 import { IconButton } from '@material-ui/core';
-//import IconButton from '@material-ui/core/IconButton';
+
 import CloseIcon from '@material-ui/icons/Close';
 
 const Alert = ({ alerts, enqueueSnackbar, closeSnackbar }) => {
@@ -17,12 +17,14 @@ const Alert = ({ alerts, enqueueSnackbar, closeSnackbar }) => {
           vertical: 'top',
           horizontal: 'center'
         },
+        autoHideDuration: 3000,
         action: key => (
           <IconButton
-            key='close'
-            aria-label='close'
-            color='inherit'
-            onClick={() => closeSnackbar(key)}>
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={() => closeSnackbar(key)}
+          >
             <CloseIcon />
           </IconButton>
         )

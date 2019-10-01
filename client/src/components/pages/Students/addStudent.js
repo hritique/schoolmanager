@@ -84,6 +84,7 @@ const AddStudent = props => {
       father: { name: student.father },
       mother: { name: student.mother }
     };
+
     const response = await axios
       .post('/students', student, {
         headers: {
@@ -107,11 +108,12 @@ const AddStudent = props => {
   }
   return (
     <div style={{ overflowX: 'hidden' }}>
-      <div className='row'>
-        <div className='col-lg-6 col-md-6 col-sm-8 mx-auto'>
+      <div className="row">
+        <div className="col-lg-6 col-md-6 col-sm-8 mx-auto">
           <form
             onSubmit={addStudent}
-            style={{ textAlign: 'center', marginBottom: '20px' }}>
+            style={{ textAlign: 'center', marginBottom: '20px' }}
+          >
             {formElementsArray.map(input => (
               <Input
                 key={input.name}
@@ -119,11 +121,12 @@ const AddStudent = props => {
                 value={input.value}
                 type={input.type}
                 helper={input.helper}
-                onChange={e => onChange(e)}>
+                onChange={e => onChange(e)}
+              >
                 {input.label}
               </Input>
             ))}
-            <Button type='submit' color='primary' variant='contained'>
+            <Button type="submit" color="primary" variant="contained">
               Add Student
             </Button>
           </form>
@@ -136,14 +139,14 @@ const AddStudent = props => {
 class Input extends Component {
   render(props) {
     return (
-      <div className='form-group'>
+      <div className="form-group">
         <TextField
           label={this.props.children}
           type={this.props.type}
           name={this.props.name}
           value={this.props.value}
           onChange={event => this.props.onChange(event)}
-          margin='dense'
+          margin="dense"
           style={{ width: '80%' }}
           helperText={this.props.helper}
           InputLabelProps={

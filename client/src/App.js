@@ -1,13 +1,16 @@
+// Basics
 import React, { useEffect, Fragment } from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 
+// Layout Components
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
 import Alert from './components/layout/Alert';
-import Login from './components/pages/Login/Login';
 
+// Pages
+import Login from './components/pages/Login/Login';
 import AddStudent from './components/pages/Students/addStudent';
 import UpdateStudent from './components/pages/Students/updateStudent';
 
@@ -30,19 +33,14 @@ const App = () => {
     <Provider store={store}>
       <Fragment>
         <Navbar />
-        <SnackbarProvider
-          maxSnack={3}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center'
-          }}>
+        <SnackbarProvider maxSnack={3}>
           <Alert />
         </SnackbarProvider>
         <Switch>
-          <Route path='/login' exact component={Login} />
-          <Route path='/addStudent' exact component={AddStudent} />
-          <Route path='/updateStudent' component={UpdateStudent} />
-          <Route path='/' exact component={Landing} />
+          <Route path="/login" exact component={Login} />
+          <Route path="/addStudent" exact component={AddStudent} />
+          <Route path="/updateStudent" component={UpdateStudent} />
+          <Route path="/" exact component={Landing} />
         </Switch>
       </Fragment>
     </Provider>

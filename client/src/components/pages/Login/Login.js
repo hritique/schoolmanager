@@ -4,7 +4,6 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
-import { setAlert } from '../../../actions/alert';
 import { login } from '../../../actions/auth';
 
 const Login = props => {
@@ -24,45 +23,41 @@ const Login = props => {
 
   // Redirect if authenticated
   if (props.isAuthenticated) {
-    return <Redirect to='/dashboard' />;
+    return <Redirect to="/dashboard" />;
   }
 
   return (
-    <div className='row'>
-      <div className='col-md-6 col-sm-8 mx-auto'>
-        <div className='card'>
-          <div className='card-header'>
+    <div className="row">
+      <div className="col-md-6 col-sm-8 mx-auto">
+        <div className="card">
+          <div className="card-header">
             <h3>Login</h3>
           </div>
-          <div className='card-body'>
+          <div className="card-body">
             <form onSubmit={loginHandler}>
-              <div className='form-group'>
-                <label htmlFor='username'>Username</label>
+              <div className="form-group">
+                <label htmlFor="username">Username</label>
                 <input
-                  className='form-control'
-                  type='username'
-                  name='username'
+                  className="form-control"
+                  type="username"
+                  name="username"
                   onChange={event => onChange(event)}
                 />
               </div>
-              <div className='form-group'>
-                <label htmlFor='password'>Password</label>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
                 <input
-                  className='form-control'
-                  type='password'
-                  name='password'
+                  className="form-control"
+                  type="password"
+                  name="password"
                   onChange={event => onChange(event)}
                 />
               </div>
-              <input
-                type='submit'
-                value='Login'
-                className='btn btn-primary btn-block'
-              />
+              <input type="submit" value="Login" className="btn btn-primary btn-block" />
             </form>
             <br />
             <p>
-              Don't have an account? <Link to='/register'>Register Here</Link>
+              Don't have an account? <Link to="/register">Register Here</Link>
             </p>
           </div>
         </div>
