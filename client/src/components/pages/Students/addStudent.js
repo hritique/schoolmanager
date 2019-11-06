@@ -119,7 +119,7 @@ const AddStudent = ({ setAlert, ...props }) => {
   return (
     <div style={{ overflowX: 'hidden' }}>
       <div className="row">
-        <div className="col-lg-4 col-md-6 col-sm-8 mx-auto">
+        <div className="col-lg-6 col-md-6 col-sm-8 mx-auto">
           <form
             onSubmit={addStudent}
             style={{ textAlign: 'center', marginBottom: '20px' }}
