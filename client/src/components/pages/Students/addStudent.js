@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import axios from '../../../axios';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import { TextField, Button, CircularProgress } from '@material-ui/core';
 
@@ -56,7 +56,7 @@ const AddStudent = ({ setAlert, ...props }) => {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await axios.get('/students', {
+      const data = await axios.get('api/students', {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }
@@ -93,7 +93,7 @@ const AddStudent = ({ setAlert, ...props }) => {
     };
 
     try {
-      await axios.post('/students', student, {
+      await axios.post('api/students', student, {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import axios from '../../../axios';
+import axios from 'axios';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PlusIcon from '@material-ui/icons/Add';
@@ -42,7 +42,7 @@ const AllStudents = ({ setAlert, ...props }) => {
 
   async function fetchData() {
     setUtils({ ...utils, loading: true });
-    const { data } = await axios.get('/students');
+    const { data } = await axios.get('api/students');
     if (data.length <= 0) setUtils({ loading: false, empty: true });
     else {
       data.map(studentData => {
@@ -65,7 +65,7 @@ const AllStudents = ({ setAlert, ...props }) => {
 
   const deleteStudent = async () => {
     try {
-      await axios.delete(`/students/${utils.sid}`);
+      await axios.delete(`api/students/${utils.sid}`);
 
       setAlert('Student deleted successfully', 'success');
     } catch (error) {

@@ -63,7 +63,7 @@ const UpdateStudent = ({ setAlert, ...props }) => {
     async function fetchData() {
       const { sid } = queryString.parse(props.location.search);
       //console.log(queryString.parse(props.location.search));
-      const studentData = (await axios.get(`/students/${sid}`, {
+      const studentData = (await axios.get(`api/students/${sid}`, {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }
@@ -120,7 +120,7 @@ const UpdateStudent = ({ setAlert, ...props }) => {
     };
 
     try {
-      await axios.patch(`/students/${student.sid}`, student, {
+      await axios.patch(`api/students/${student.sid}`, student, {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }
