@@ -4,8 +4,8 @@
   "description": "School Management Software",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server --ignore 'client/*'",
-    "server": "nodemon server --ignore 'client/*'",
+    "start": "nodemon server.js --ignore 'client/*'",
+    "server": "nodemon server.js --ignore 'client/*'",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
