@@ -91,4 +91,44 @@ router.post(
   }
 );
 
+// Update a student data
+router.patch('/:sid', auth, async (req, res) => {
+  const sid = req.params.sid;
+
+  try {
+    let student = await Student.findOne({ sid });
+
+    if (student) {
+      const updatedStudent = req.body;
+      Object.keys(updatedStudent).map(key => {
+        student[key] = updatedStudent[key];
+      });
+      await student.save();
+      res.status(200).json({ student });
+    } else {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'No Student exist with this SID' }] });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json('Server error');
+  }
+});
+
+router.delete('/:sid', auth, async (req, res) => {
+  const sid = req.params.sid;
+  console.log(sid);
+
+  try {
+    let response = await Student.findOneAndDelete({ sid });
+    if (!response)
+      return res.status(400).json({ errors: [{ msg: 'No student to delete' }] });
+    res.status(200).json({ response });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json('Server error');
+  }
+});
+
 module.exports = router;

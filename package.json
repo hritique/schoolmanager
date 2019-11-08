@@ -4,8 +4,8 @@
   "description": "School Management Software",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server",
-    "server": "nodemon server",
+    "start": "nodemon server --ignore 'client/*'",
+    "server": "nodemon server --ignore 'client/*'",
     "client": "npm start --prefix client",
     "both": "concurrently \"npm run server\" \"npm run client\""
   },
