@@ -1,6 +1,6 @@
 import { LOGIN_SUCCESS, LOGIN_FAIL, LOAD_USER, AUTH_ERROR, LOGOUT } from './types';
 import { setAlert } from './alert';
-import axios from '../axios';
+import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 
 export const loadUser = () => async dispatch => {
