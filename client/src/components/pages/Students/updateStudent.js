@@ -1,9 +1,14 @@
 import React, { Component, useState, useEffect } from 'react';
 import axios from '../../../axios';
 import queryString from 'query-string';
+import PropTypes from 'prop-types';
 import { TextField, Button, CircularProgress } from '@material-ui/core';
 
-const UpdateStudent = props => {
+// Redux
+import { connect } from 'react-redux';
+import { setAlert } from '../../../actions/alert';
+
+const UpdateStudent = ({ setAlert, ...props }) => {
   const [formData, setFormData] = useState({
     sid: {
       label: 'SID',
@@ -49,8 +54,9 @@ const UpdateStudent = props => {
     }
   });
 
-  const [util, setUtil] = useState({
-    loading: true
+  const [utils, setUtils] = useState({
+    studentDataLoading: true,
+    buttonLoading: false
   });
 
   useEffect(() => {
@@ -83,10 +89,10 @@ const UpdateStudent = props => {
         mother: { ...student.mother, value: student.mother.value.name }
       };
       setFormData({ ...formData, ...student });
-      setUtil({ loading: false });
+      setUtils({ studentDataLoading: false });
     }
     fetchData();
-  }, [formData, props.location.search]);
+  }, []);
 
   // console.log(response.data);
 
@@ -101,6 +107,7 @@ const UpdateStudent = props => {
   };
 
   const updateStudent = async event => {
+    setUtils({ buttonLoading: true });
     event.preventDefault();
     let student = {};
     for (let key in formData) {
@@ -111,17 +118,27 @@ const UpdateStudent = props => {
       father: { name: student.father },
       mother: { name: student.mother }
     };
-    const response = await axios
-      .post('/students', student, {
+
+    try {
+      await axios.patch(`/students/${student.sid}`, student, {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }
-      })
-      .catch(err => {
-        console.error(err);
       });
+
+      setAlert('Student updated successfully', 'success');
+      props.history.goBack();
+    } catch (error) {
+      const errors = error.response.data.errors;
+
+      if (errors) {
+        errors.forEach(error => {
+          setAlert(error.msg, 'error');
+        });
+      }
+    }
+    setUtils({ buttonLoading: false });
     // console.log('After adding student:', response);
-    if (response.status) props.history.push('/dashboard');
   };
 
   const formElementsArray = [];
@@ -133,13 +150,23 @@ const UpdateStudent = props => {
     });
   }
 
-  let form;
-  if (util.loading) form = <CircularProgress />;
-  else
+  let buttonRender = (
+    <div>
+      <Button type="submit" color="primary" variant="contained">
+        Update Student
+      </Button>
+      &nbsp;&nbsp;
+      <Button variant="contained" onClick={() => props.history.goBack()}>
+        Cancel
+      </Button>
+    </div>
+  );
+  if (utils.buttonLoading) buttonRender = <CircularProgress />;
+
+  let form = <CircularProgress />;
+  if (!utils.studentDataLoading)
     form = (
-      <form
-        onSubmit={updateStudent}
-        style={{ textAlign: 'center', marginBottom: '20px' }}>
+      <div>
         {formElementsArray.map(input => (
           <Input
             key={input.name}
@@ -147,19 +174,26 @@ const UpdateStudent = props => {
             value={input.value}
             type={input.type}
             helper={input.helper}
-            onChange={e => onChange(e)}>
+            onChange={e => onChange(e)}
+          >
             {input.label}
           </Input>
         ))}
-        <Button type='submit' color='primary' variant='contained'>
-          Update Student
-        </Button>
-      </form>
+        {buttonRender}
+      </div>
     );
+
   return (
     <div style={{ overflowX: 'hidden' }}>
-      <div className='row'>
-        <div className='col-lg-6 col-md-6 col-sm-8 mx-auto'>{form}</div>
+      <div className="row">
+        <div className="col-lg-6 col-md-6 col-sm-8 mx-auto">
+          <form
+            onSubmit={updateStudent}
+            style={{ textAlign: 'center', marginBottom: '20px' }}
+          >
+            {form}
+          </form>
+        </div>
       </div>
     </div>
   );
@@ -168,14 +202,14 @@ const UpdateStudent = props => {
 class Input extends Component {
   render(props) {
     return (
-      <div className='form-group'>
+      <div className="form-group">
         <TextField
           label={this.props.children}
           type={this.props.type}
           name={this.props.name}
           value={this.props.value}
           onChange={event => this.props.onChange(event)}
-          margin='dense'
+          margin="dense"
           style={{ width: '80%' }}
           helperText={this.props.helper}
           InputLabelProps={
@@ -192,4 +226,11 @@ class Input extends Component {
   }
 }
 
-export default UpdateStudent;
+UpdateStudent.propTypes = {
+  setAlert: PropTypes.func.isRequired
+};
+
+export default connect(
+  null,
+  { setAlert }
+)(UpdateStudent);

@@ -8,9 +8,9 @@ import { logout } from '../../actions/auth';
 
 const Navbar = ({ logout, isAuthenticated, loading }) => {
   const guestLinks = (
-    <ul className='navbar-nav'>
-      <li className='nav-item'>
-        <Link to='/login' className='nav-link'>
+    <ul className="navbar-nav">
+      <li className="nav-item">
+        <Link to="/login" className="nav-link">
           Login
         </Link>
       </li>
@@ -18,59 +18,61 @@ const Navbar = ({ logout, isAuthenticated, loading }) => {
   );
 
   const authLinks = (
-    <ul className='navbar-nav'>
-      <li className='nav-item dropdown'>
+    <ul className="navbar-nav">
+      <li className="nav-item dropdown">
         <a
-          className='nav-link dropdown-toggle'
-          id='student-menu'
-          role='button'
-          href='#!'
-          data-toggle='dropdown'
-          aria-haspopup='true'
-          aria-expanded='false'>
+          className="nav-link dropdown-toggle"
+          id="student-menu"
+          role="button"
+          href="#!"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
           Student
         </a>
-        <div className='dropdown-menu' aria-labelledby='student-menu'>
-          <Link to='/addStudent' className='dropdown-item'>
+        <div className="dropdown-menu" aria-labelledby="student-menu">
+          <Link to="/addStudent" className="dropdown-item">
             Add Student
           </Link>
 
-          <a href='#!' className='dropdown-item'>
+          <a href="#!" className="dropdown-item">
             Show Student by SID
           </a>
 
-          <a href='#!' className='dropdown-item'>
+          <Link to="/students" className="dropdown-item">
             Show all the Students
-          </a>
+          </Link>
         </div>
       </li>
-      <li className='nav-item dropdown'>
+      <li className="nav-item dropdown">
         <a
-          className='nav-link dropdown-toggle'
-          id='fee-menu'
-          role='button'
-          href='#!'
-          data-toggle='dropdown'
-          aria-haspopup='true'
-          aria-expanded='false'>
+          className="nav-link dropdown-toggle"
+          id="fee-menu"
+          role="button"
+          href="#!"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
           Fee
         </a>
-        <div className='dropdown-menu' aria-labelledby='fee-menu'>
-          <a href='#!' className='dropdown-item'>
+        <div className="dropdown-menu" aria-labelledby="fee-menu">
+          <a href="#!" className="dropdown-item">
             Add Fee
           </a>
 
-          <a href='#!' className='dropdown-item'>
+          <a href="#!" className="dropdown-item">
             Show Fee by SID
           </a>
 
-          <a href='#!' className='dropdown-item'>
+          <a href="#!" className="dropdown-item">
             Show all the Fees
           </a>
         </div>
       </li>
-      <li className='nav-item'>
-        <a onClick={logout} className='nav-link' href='#!'>
+      <li className="nav-item">
+        <a onClick={logout} className="nav-link" href="#!">
           Logout
         </a>
       </li>
@@ -80,15 +82,14 @@ const Navbar = ({ logout, isAuthenticated, loading }) => {
   return (
     <Fragment>
       <nav
-        className='navbar navbar-expand-lg navbar-dark bg-dark'
-        style={{ marginBottom: '40px' }}>
-        <div className='container'>
-          <Link to='/' className='navbar-brand'>
+        className="navbar navbar-expand-lg navbar-dark bg-dark"
+        style={{ marginBottom: '40px' }}
+      >
+        <div className="container">
+          <Link to="/" className="navbar-brand">
             SCHOOL <strong>MANAGER</strong>
           </Link>
-          {!loading && (
-            <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
-          )}
+          {!loading && <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>}
         </div>
       </nav>
     </Fragment>

@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from 'react';
 import axios from '../../../axios';
 import PropTypes from 'prop-types';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, CircularProgress } from '@material-ui/core';
 
 import { connect } from 'react-redux';
 import { setAlert } from '../../../actions/alert';
@@ -52,6 +52,8 @@ const AddStudent = ({ setAlert, ...props }) => {
     }
   });
 
+  const [utils, setUtils] = useState({ loading: false });
+
   useEffect(() => {
     async function fetchData() {
       const data = await axios.get('/students', {
@@ -78,6 +80,7 @@ const AddStudent = ({ setAlert, ...props }) => {
   };
 
   const addStudent = async event => {
+    setUtils({ loading: true });
     event.preventDefault();
     let student = {};
     for (let key in formData) {
@@ -90,7 +93,7 @@ const AddStudent = ({ setAlert, ...props }) => {
     };
 
     try {
-      const response = await axios.post('/students', student, {
+      await axios.post('/students', student, {
         headers: {
           'x-auth-token': localStorage.getItem('token')
         }
@@ -106,6 +109,7 @@ const AddStudent = ({ setAlert, ...props }) => {
         });
       }
     }
+    setUtils({ loading: false });
   };
 
   const formElementsArray = [];
@@ -116,6 +120,20 @@ const AddStudent = ({ setAlert, ...props }) => {
       ...formData[key]
     });
   }
+
+  let buttonRender = (
+    <div>
+      <Button type="submit" color="primary" variant="contained">
+        Add Student
+      </Button>
+      &nbsp;&nbsp;
+      <Button variant="contained" onClick={() => props.history.goBack()}>
+        Cancel
+      </Button>
+    </div>
+  );
+
+  if (utils.loading) buttonRender = <CircularProgress />;
   return (
     <div style={{ overflowX: 'hidden' }}>
       <div className="row">
@@ -136,9 +154,7 @@ const AddStudent = ({ setAlert, ...props }) => {
                 {input.label}
               </Input>
             ))}
-            <Button type="submit" color="primary" variant="contained">
-              Add Student
-            </Button>
+            {buttonRender}
           </form>
         </div>
       </div>

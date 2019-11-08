@@ -17,7 +17,7 @@ const Alert = ({ alerts, enqueueSnackbar, closeSnackbar }) => {
           vertical: 'top',
           horizontal: 'center'
         },
-        autoHideDuration: 3000,
+        autoHideDuration: 1000,
         action: key => (
           <IconButton
             key="close"
