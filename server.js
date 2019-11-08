@@ -12,7 +12,7 @@ connectDB();
 app.use(cors());
 app.use(express.json({ extended: false }));
 
-app.get('/', (req, res) => res.send('API Running'));
+// app.get('/', (req, res) => res.send('API Running'));
 
 // Define Routes
 app.use('/api/users', require('./routes/api/users'));
@@ -23,7 +23,9 @@ app.use('/api/fees', require('./routes/api/fees'));
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
-  app.use('*', (req, res) => {
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
