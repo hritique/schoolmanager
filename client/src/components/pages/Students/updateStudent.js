@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
-import axios from '../../../axios';
+import axios from 'axios';
 import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import { TextField, Button, CircularProgress } from '@material-ui/core';
