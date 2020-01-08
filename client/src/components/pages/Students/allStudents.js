@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import axios from 'axios';
@@ -22,7 +22,8 @@ import {
   Button,
   Dialog,
   IconButton,
-  Tooltip
+  Tooltip,
+  Input
 } from '@material-ui/core';
 
 // Dialogs
@@ -36,8 +37,38 @@ const AllStudents = ({ setAlert, ...props }) => {
   const [utils, setUtils] = useState({
     loading: true,
     empty: false,
-    dialogOpen: false,
-    sid: ''
+    sid: '',
+    dialog: {
+      open: false,
+      title: 'Are you sure ?',
+      content: (
+        <Fragment>
+          Are you sure want to erase all the data for the selected student ?
+        </Fragment>
+      ),
+      action: (
+        <Fragment>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => deleteStudent()}
+            style={{ fontWeight: 'bolder' }}
+          >
+            Yes, Sure!
+          </Button>
+          <Button
+            variant="contained"
+            color="default"
+            onClick={() =>
+              setUtils({ ...utils, dialog: { ...utils.dialog, open: false } })
+            }
+            style={{ fontWeight: 'bolder' }}
+          >
+            No, Take me back!
+          </Button>
+        </Fragment>
+      )
+    }
   });
 
   async function fetchData() {
@@ -77,7 +108,7 @@ const AllStudents = ({ setAlert, ...props }) => {
         });
       }
     }
-    setUtils({ ...utils, dialogOpen: false });
+    setUtils({ ...utils, dialog: { ...utils.dialog, open: false } });
     setStudents([]);
   };
 
@@ -107,7 +138,13 @@ const AllStudents = ({ setAlert, ...props }) => {
 
           <Tooltip title="Delete">
             <IconButton
-              onClick={() => setUtils({ ...utils, dialogOpen: true, sid: student.sid })}
+              onClick={() =>
+                setUtils({
+                  ...utils,
+                  dialog: { ...utils.dialog, open: true },
+                  sid: student.sid
+                })
+              }
             >
               <DeleteIcon color="error" fontSize="small" />
             </IconButton>
@@ -128,36 +165,18 @@ const AllStudents = ({ setAlert, ...props }) => {
   return (
     <div style={{ textAlign: 'center' }}>
       <Dialog
-        open={utils.dialogOpen}
-        onClose={() => setUtils({ ...utils, dialogOpen: false })}
+        open={utils.dialog.open}
+        onClose={() => setUtils({ ...utils, dialog: { ...utils.dialog, open: false } })}
       >
-        <DialogTitle>Are you sure ?</DialogTitle>
+        <DialogTitle>{utils.dialog.title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Are you sure want to erase all the data for the selected student ?
-          </DialogContentText>
-          <DialogActions>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => deleteStudent()}
-              style={{ fontWeight: 'bolder' }}
-            >
-              Yes, Sure!
-            </Button>
-            <Button
-              variant="contained"
-              color="default"
-              onClick={() => setUtils({ ...utils, dialogOpen: false })}
-              style={{ fontWeight: 'bolder' }}
-            >
-              No, Take me back!
-            </Button>
-          </DialogActions>
+          <DialogContentText>{utils.dialog.content}</DialogContentText>
+          <DialogActions>{utils.dialog.action}</DialogActions>
         </DialogContent>
       </Dialog>
-      <Paper style={{ width: '50%', margin: '15px auto', backgroundColor: '#eee' }}>
-        <Table>
+
+      <Paper style={{ width: '50vw', margin: '15px auto', backgroundColor: '#eee' }}>
+        <Table style={{ width: '50vw', backgroundColor: '#eee' }}>
           <TableHead>
             <TableRow style={{ backgroundColor: '#333' }}>
               <TableCell style={{ color: 'white', fontWeight: 'bolder' }}>SID</TableCell>
@@ -198,7 +217,4 @@ AllStudents.propTypes = {
   setAlert: PropTypes.func.isRequired
 };
 
-export default connect(
-  null,
-  { setAlert }
-)(AllStudents);
+export default connect(null, { setAlert })(AllStudents);
