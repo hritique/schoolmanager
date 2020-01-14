@@ -60,6 +60,7 @@ router.post(
     }
 
     const { sid, name, dob, grade, father, mother, mobile, address } = req.body;
+    //console.log(req.body);
 
     try {
       let student = await Student.findOne({ sid });
@@ -91,6 +92,53 @@ router.post(
   }
 );
 
+// Add multiple students
+router.post('/addMultiple', auth, async (req, res) => {
+  const { students } = req.body;
+
+  await Student.deleteMany();
+
+  const addStudent = async inputStudent => {
+    const { sid, name, dob, grade, father, mother, mobile, address } = inputStudent;
+
+    try {
+      let student = await Student.findOne({ sid });
+
+      if (student) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Student already exist with this SID' }] });
+      }
+
+      student = new Student({
+        sid,
+        name,
+        dob,
+        grade,
+        father,
+        mother,
+        mobile,
+        address
+      });
+
+      await student.save();
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).json('Server error');
+    }
+  };
+
+  try {
+    //console.log(students);
+    await students.map(student => addStudent(student));
+
+    res.status(200).json('Students added');
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json('Server error');
+  }
+});
+
 // Update a student data
 router.patch('/:sid', auth, async (req, res) => {
   const sid = req.params.sid;
@@ -118,7 +166,7 @@ router.patch('/:sid', auth, async (req, res) => {
 
 router.delete('/:sid', auth, async (req, res) => {
   const sid = req.params.sid;
-  console.log(sid);
+  // console.log(sid);
 
   try {
     let response = await Student.findOneAndDelete({ sid });
