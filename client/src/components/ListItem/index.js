@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaPencilAlt, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 const Container = styled.div`
   display: flex;
@@ -18,6 +18,10 @@ const IconContainer = styled.div`
   justify-content: space-between;
   width: 60px;
   font-size: 20px;
+
+  > svg {
+    cursor: pointer;
+  }
 `;
 
 const Title = styled.h2`
@@ -32,8 +36,8 @@ export const ListItem = props => {
     <Container>
       <Title>{props.children}</Title>
       <IconContainer>
-        <FaEdit color="#fff" />
-        <FaTrash color="red" />
+        <FaEdit color="#fff" onClick={props.onEdit} />
+        <FaTrashAlt color="rgba(248, 1, 23)" onClick={props.onDelete} />
       </IconContainer>
     </Container>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { NavTabLinks } from './NavTabLinks';
 
@@ -9,22 +9,15 @@ const Container = styled.div`
 `;
 
 export const NavTabs = props => {
-  // const onClickNav = key => {
-  //   const prevKey = Object.entries(links).filter(
-  //     objEntry => objEntry[1].active === true
-  //   )[0][0];
-  //   setLinks({
-  //     ...links,
-  //     [prevKey]: { ...links[prevKey], active: false },
-  //     [key]: { ...links[key], active: true }
-  //   });
-  // };
-
   return (
     <Container>
       {Object.keys(props.links).map(key => {
         return (
-          <NavTabLinks key={key} active={props.links[key].active} onClick>
+          <NavTabLinks
+            key={key}
+            active={props.links[key].active}
+            onClick={() => props.onClick(key)}
+          >
             {props.links[key].value}
           </NavTabLinks>
         );

@@ -7,7 +7,7 @@ const Container = styled.div`
   top: 0;
   left: 0;
   width: 242px;
-  height: 1024px;
+  height: 100vh;
   background: ${props => props.theme.primaryBackplate};
 `;
 

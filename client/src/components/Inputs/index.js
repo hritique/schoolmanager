@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -29,7 +29,8 @@ const Title = styled.h2`
 `;
 
 const InputTextContainer = styled.div`
-  border: 1px solid ${props => (props.disabled ? '#ccc' : props.theme.primaryOrange)};
+  border: 1px solid
+    ${props => (props.disabled ? '#ccc' : props.theme.gradient_simple_orange)};
   border-radius: 5px;
   height: 43px;
   display: flex;
@@ -62,7 +63,7 @@ export const InputText = props => {
           name={props.name}
           id={props.id}
           value={props.value}
-          onChange={e => props.onChange(e)}
+          onChange={props.onChange}
           disabled={props.disabled}
         />
       </InputTextContainer>

@@ -8,8 +8,6 @@ import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Alert from './components/layout/Alert';
 
-
-
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';

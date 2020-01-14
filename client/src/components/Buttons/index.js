@@ -13,6 +13,8 @@ const ButtonPrimary = styled.button`
         return '#EB5757';
       case 'cancel':
         return '#828282';
+      case 'edit':
+        return '#F2994A';
       default:
         break;
     }
@@ -59,6 +61,7 @@ const ButttonSecondary = styled.button`
         return '#EB5757';
       case 'cancel':
         return '#828282';
+
       default:
         return `${props.theme.primaryOrange}`;
     }
@@ -74,9 +77,17 @@ const ButttonSecondary = styled.button`
 `;
 
 export const Primary = props => {
-  return <ButtonPrimary type={props.type}>{props.children}</ButtonPrimary>;
+  return (
+    <ButtonPrimary type={props.type} onClick={props.onClick}>
+      {props.children}
+    </ButtonPrimary>
+  );
 };
 
 export const Secondary = props => {
-  return <ButttonSecondary type={props.type}>{props.children}</ButttonSecondary>;
+  return (
+    <ButttonSecondary type={props.type} onClick={props.onClick}>
+      {props.children}
+    </ButttonSecondary>
+  );
 };
