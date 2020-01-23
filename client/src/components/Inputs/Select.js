@@ -74,7 +74,7 @@ export const Menu = props => {
           onChange={props.onChange}
           value={props.selected}
         >
-          <Option value="">Select Class</Option>
+          <Option value="">{props.default}</Option>
           {values.map(grade => (
             <Option key={grade._id} value={grade._id}>
               {grade.name}

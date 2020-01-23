@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Route, Switch } from 'react-router-dom';
+import PrivateRoute from '../../routing/PrivateRoute';
 
 // Pages
 import Dashboard from '../../pages/Dashboard';
@@ -20,8 +21,8 @@ const Content = () => {
   return (
     <Container>
       <Switch>
-        <Route path="/masters" component={Masters} />
-        <Route path="/" exact component={Dashboard} />
+        <PrivateRoute path="/masters" component={Masters} />
+        <PrivateRoute path="/" exact component={Dashboard} />
       </Switch>
     </Container>
   );

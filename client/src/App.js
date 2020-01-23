@@ -7,6 +7,7 @@ import { SnackbarProvider } from 'notistack';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Alert from './components/layout/Alert';
+import Login from './components/pages/Login/Login';
 
 // Redux
 import { Provider } from 'react-redux';
@@ -18,6 +19,7 @@ import { loadUser } from './actions/auth';
 import styled, { ThemeProvider } from 'styled-components';
 import bcg from './assets/img/background.jpg';
 import Content from './components/layout/Content';
+import Layout from './components/layout/Layout';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -58,12 +60,11 @@ const App = () => {
       <Fragment>
         <ThemeProvider theme={theme}>
           <Container />
-          <Navbar />
-          <Sidebar />
+          <Route path="/login" exact component={Login} />
+          <Layout />
           <SnackbarProvider maxSnack={10}>
             <Alert />
           </SnackbarProvider>
-          <Content />
         </ThemeProvider>
       </Fragment>
     </Provider>

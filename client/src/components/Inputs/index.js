@@ -5,7 +5,7 @@ const Container = styled.div`
   width: 270px;
   display: flex;
   flex-direction: column;
-  margin: 10px 0;
+  margin-top: 10px;
 
   &:focus-within {
     h2 {
@@ -29,8 +29,7 @@ const Title = styled.h2`
 `;
 
 const InputTextContainer = styled.div`
-  border: 1px solid
-    ${props => (props.disabled ? '#ccc' : props.theme.gradient_simple_orange)};
+  border: 1px solid ${props => (props.disabled ? '#ccc' : props.theme.primaryOrange)};
   border-radius: 5px;
   height: 43px;
   display: flex;
@@ -65,6 +64,7 @@ export const InputText = props => {
           value={props.value}
           onChange={props.onChange}
           disabled={props.disabled}
+          autoFocus={props.autoFocus}
         />
       </InputTextContainer>
     </Container>

@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 // Redux
 import { connect } from 'react-redux';
+
 import { logout } from '../../actions/auth';
 
 const Container = styled.div`

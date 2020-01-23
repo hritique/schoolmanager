@@ -166,7 +166,12 @@ const Classes = ({ setAlert, ...props }) => {
         </TabHeader>
         <TabContent>
           <TabContent_Main>
-            <InputText type="text" value={values.name} onChange={onNameChangeHandler}>
+            <InputText
+              autoFocus
+              type="text"
+              value={values.name}
+              onChange={onNameChangeHandler}
+            >
               Class
             </InputText>
             <InputText

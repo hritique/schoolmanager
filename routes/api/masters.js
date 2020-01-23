@@ -184,4 +184,7 @@ router.patch('/subject', auth, async (req, res) => {
   }
 });
 
+// Fees Routes
+router.post('/fee', auth, async (req, res) => {});
+
 module.exports = router;

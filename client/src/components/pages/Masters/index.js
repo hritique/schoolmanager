@@ -8,8 +8,8 @@ const Container = styled.div``;
 
 const Masters = () => {
   const [tabLinks, setTabLinks] = useState({
-    1: { value: 'Classes', active: false },
-    2: { value: 'Subjects', active: true },
+    1: { value: 'Classes', active: true },
+    2: { value: 'Subjects', active: false },
     3: { value: 'Fees', active: false },
     4: { value: 'Assessments', active: false }
   });
@@ -28,7 +28,7 @@ const Masters = () => {
   return (
     <Container>
       <NavTabs links={tabLinks} onClick={key => onClickTab(key)} />
-      <Subjects />
+      {tabLinks[1].active === true ? <Classes /> : <Subjects />}
     </Container>
   );
 };

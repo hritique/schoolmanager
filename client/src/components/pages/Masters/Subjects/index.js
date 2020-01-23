@@ -207,6 +207,7 @@ const Subjects = ({ setAlert, ...props }) => {
           <TabContent_Main>
             <Menu
               value={classList}
+              default="Select Class"
               onChange={event => onClassSelectHandler(event.target.value)}
               disabled={utils.selectedClass !== ''}
               selected={utils.selectedClass === '' ? '' : utils.selectedClass._id}
