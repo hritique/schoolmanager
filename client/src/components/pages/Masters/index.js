@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Switch, Route } from 'react-router-dom';
+
 import { NavTabs } from '../../NavTabs';
 import styled from 'styled-components';
 import Classes from './Classes';
@@ -7,30 +9,23 @@ import Subjects from './Subjects';
 const Container = styled.div``;
 
 const Masters = () => {
-  const [tabLinks, setTabLinks] = useState({
-    1: { value: 'Classes', active: true },
-    2: { value: 'Subjects', active: false },
-    3: { value: 'Fees', active: false },
-    4: { value: 'Assessments', active: false }
-  });
+	const [tabLinks, setTabLinks] = useState({
+		1: { name: 'Classes', value: '/masters/classes' },
+		2: { name: 'Subjects', value: '/masters/subjects' },
+		3: { name: 'Fees', value: '/masters/fees' },
+		4: { name: 'Assessments', value: '/masters/assessments' },
+	});
 
-  const onClickTab = async key => {
-    const prevKey = Object.entries(tabLinks).filter(
-      objEntry => objEntry[1].active === true
-    )[0][0];
-    setTabLinks({
-      ...tabLinks,
-      [prevKey]: { ...tabLinks[prevKey], active: false },
-      [key]: { ...tabLinks[key], active: true }
-    });
-  };
+	return (
+		<Container>
+			<NavTabs links={tabLinks} />
 
-  return (
-    <Container>
-      <NavTabs links={tabLinks} onClick={key => onClickTab(key)} />
-      {tabLinks[1].active === true ? <Classes /> : <Subjects />}
-    </Container>
-  );
+			<Switch>
+				<Route path="/masters/classes" component={Classes} />
+				<Route path="/masters/subjects" component={Subjects} />
+			</Switch>
+		</Container>
+	);
 };
 
 export default Masters;

@@ -1,19 +1,44 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
-module.exports = (req, res, next) => {
-  const token = req.header('x-auth-token');
 
-  if (!token) {
-    return res
-      .status(401)
-      .json({ msg: 'No token found, authorization denied' });
-  }
+const auth = (req, res, next) => {
+	const token = req.cookies.token || '';
 
-  try {
-    const decoded = jwt.verify(token, config.get('jwtSecret'));
-    req.user = decoded.user;
-    next();
-  } catch (err) {
-    res.status(401).json('Invalid token');
-  }
+	if (!token) {
+		req.user = null;
+		return next();
+	}
+
+	try {
+		const decoded = jwt.verify(token, config.get('jwtSecret'));
+		req.user = decoded.user;
+		return next();
+	} catch (err) {
+		req.user = null;
+		return next();
+	}
 };
+
+const protectAPI = (req, res, next) => {
+	console.log('ProtectAPI');
+	if (req.user) {
+		return next();
+	}
+	res.status(401).json({ msg: 'Unauthorized route' });
+};
+
+const protectApp = (req, res, next) => {
+	if (req.user) {
+		return next();
+	}
+	res.redirect('/login');
+};
+
+const isAlreadyAuthenticated = (req, res, next) => {
+	if (!req.user) {
+		return next();
+	}
+	res.redirect('/app');
+};
+
+module.exports = { auth, protectAPI, protectApp, isAlreadyAuthenticated };

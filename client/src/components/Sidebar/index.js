@@ -1,62 +1,48 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import NavLink from './NavLink';
 
+import {
+	FaHome,
+	FaPuzzlePiece,
+	FaUserGraduate,
+	FaEnvelope,
+	FaRupeeSign,
+	FaChartBar,
+	FaDownload,
+	FaSearch,
+} from 'react-icons/fa';
+
 const Container = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 242px;
-  height: 100vh;
-  background: ${props => props.theme.primaryBackplate};
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 15rem;
+	height: 100%;
+	padding-top: 3rem;
+	background: ${(props) => props.theme.primaryBackplate};
 `;
 
 const Nav = styled.ul`
-  list-style: none;
-  padding-top: 80px;
+	list-style: none;
+	padding: 1rem 0;
 `;
 
 const Sidebar = () => {
-  const [navLinks, setNavLinks] = useState({
-    1: { name: 'Dashboard', active: true, to: '/' },
-    2: { name: 'Masters', active: false, to: '/masters' },
-    3: { name: 'Student', active: false, to: '/student' },
-    4: { name: 'SMS', active: false, to: '/sms' },
-    5: { name: 'Fees', active: false, to: '/fee' },
-    6: { name: 'Examination', active: false, to: '/exam' },
-    7: { name: 'Downloads', active: false, to: '/downloads' },
-    8: { name: 'Enquiry', active: false, to: '/enquiry' }
-  });
-
-  const onClickNav = async key => {
-    const prevKey = Object.entries(navLinks).filter(
-      objEntry => objEntry[1].active === true
-    )[0][0];
-    setNavLinks({
-      ...navLinks,
-      [prevKey]: { ...navLinks[prevKey], active: false },
-      [key]: { ...navLinks[key], active: true }
-    });
-  };
-
-  return (
-    <Container>
-      <Nav>
-        {Object.keys(navLinks).map(key => {
-          return (
-            <NavLink
-              key={key}
-              active={navLinks[key].active}
-              onClick={() => onClickNav(key)}
-              to={navLinks[key].to}
-            >
-              {navLinks[key].name}
-            </NavLink>
-          );
-        })}
-      </Nav>
-    </Container>
-  );
+	return (
+		<Container>
+			<Nav>
+				<NavLink to="/" exact icon={<FaHome />} title="Dashboard" />
+				<NavLink to="/masters" icon={<FaPuzzlePiece />} title="Masters" />
+				<NavLink to="/student" icon={<FaUserGraduate />} title="Student" />
+				<NavLink to="/sms" icon={<FaEnvelope />} title="SMS" />
+				<NavLink to="/fees" icon={<FaRupeeSign />} title="Fees" />
+				<NavLink to="/exam" icon={<FaChartBar />} title="Examination" />
+				<NavLink to="/downloads" icon={<FaDownload />} title="Downloads" />
+				<NavLink to="/enquiry" icon={<FaSearch />} title="Enquiry" />
+			</Nav>
+		</Container>
+	);
 };
 
 export default Sidebar;

@@ -1,190 +1,196 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const auth = require('../../middleware/auth');
+
 const { check, validationResult } = require('express-validator');
 
 const Class = require('../../models/Class.Model');
 const Subject = require('../../models/Subject.Schema');
 
 // Class Routes
-router.patch('/class/:id', auth, async (req, res) => {
-  try {
-    console.log(req.body);
+router.patch('/class/:id', async (req, res) => {
+	try {
+		console.log(req.body);
 
-    const grade = await Class.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    return res.status(200).json(grade);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json('Server error');
-  }
+		const grade = await Class.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+		});
+		return res.status(200).json(grade);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
+	}
 });
 
-router.get('/class', auth, async (req, res) => {
-  try {
-    const classList = await Class.find();
-    return res.status(200).json(classList);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json('Server error');
-  }
+router.get('/class', async (req, res) => {
+	try {
+		const classList = await Class.find();
+		return res.status(200).json(classList);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
+	}
 });
 
-router.delete('/class', auth, async (req, res) => {
-  try {
-    console.log(req.body);
+router.delete('/class', async (req, res) => {
+	try {
+		console.log(req.body);
 
-    grade = await Class.findByIdAndDelete(req.body.deleteId);
-    res.status(200).json(grade);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json('Server error');
-  }
+		grade = await Class.findByIdAndDelete(req.body.deleteId);
+		res.status(200).json(grade);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
+	}
 });
 
 router.post(
-  '/class',
-  auth,
-  [
-    check('name', 'Class cannot be empty')
-      .not()
-      .isEmpty()
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+	'/class',
 
-    const { name, teacher } = req.body;
+	[check('name', 'Class cannot be empty').not().isEmpty()],
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
 
-    try {
-      let grade = await Class.findOne({ name });
+		const { name, teacher } = req.body;
 
-      if (grade) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'Class already exist with entered name' }] });
-      }
+		try {
+			let grade = await Class.findOne({ name });
 
-      grade = new Class({ name, teacher });
+			if (grade) {
+				return res
+					.status(400)
+					.json({ errors: [{ msg: 'Class already exist with entered name' }] });
+			}
 
-      const savedGrade = await grade.save();
+			grade = new Class({ name, teacher });
 
-      res.status(200).json(savedGrade);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).json('Server error');
-    }
-  }
+			const savedGrade = await grade.save();
+
+			res.status(200).json(savedGrade);
+		} catch (err) {
+			console.error(err.message);
+			res.status(500).json('Server error');
+		}
+	}
 );
 
 // Subjects Route
 router.post(
-  '/subject',
-  auth,
-  [
-    check('name', 'Subject name cannot be empty')
-      .not()
-      .isEmpty()
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+	'/subject',
 
-    const { classId, name, priority } = req.body;
+	[check('name', 'Subject name cannot be empty').not().isEmpty()],
+	async (req, res) => {
+		const errors = validationResult(req);
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() });
+		}
 
-    try {
-      const grade = await Class.findOne({ _id: classId });
-      if (!grade) {
-        return res.status(400).json({ errors: [{ msg: 'No class exist' }] });
-      }
+		const { classId, name, priority } = req.body;
 
-      let newSubject = grade.subjects.filter(subject => subject.name === name);
+		try {
+			const grade = await Class.findOne({ _id: classId });
+			if (!grade) {
+				return res.status(400).json({ errors: [{ msg: 'No class exist' }] });
+			}
 
-      if (newSubject.length !== 0) {
-        console.log(newSubject);
-        return res.status(400).json({ errors: [{ msg: 'Subject already exist' }] });
-      }
+			let newSubject = grade.subjects.filter(
+				(subject) => subject.name === name
+			);
 
-      newSubject = { name, priority };
+			if (newSubject.length !== 0) {
+				console.log(newSubject);
+				return res
+					.status(400)
+					.json({ errors: [{ msg: 'Subject already exist' }] });
+			}
 
-      grade.subjects.push(newSubject);
+			newSubject = { name, priority };
 
-      grade.subjects.sort((a, b) => a.priority - b.priority);
+			grade.subjects.push(newSubject);
 
-      const result = await grade.save();
-      res.status(200).json(result);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).json('Server error');
-    }
-  }
+			grade.subjects.sort((a, b) => a.priority - b.priority);
+
+			const result = await grade.save();
+			res.status(200).json(result);
+		} catch (err) {
+			console.error(err.message);
+			res.status(500).json('Server error');
+		}
+	}
 );
 
-router.delete('/subject', auth, async (req, res) => {
-  console.log(req.body);
-  const { classId, subjectId } = req.body;
+router.delete('/subject', async (req, res) => {
+	console.log(req.body);
+	const { classId, subjectId } = req.body;
 
-  try {
-    const grade = await Class.findOne({ _id: classId });
-    if (!grade) {
-      return res.status(400).json({ errors: [{ msg: 'No class exist' }] });
-    }
+	try {
+		const grade = await Class.findOne({ _id: classId });
+		if (!grade) {
+			return res.status(400).json({ errors: [{ msg: 'No class exist' }] });
+		}
 
-    let newSubject = grade.subjects.filter(subject => subject.id === subjectId);
+		let newSubject = grade.subjects.filter(
+			(subject) => subject.id === subjectId
+		);
 
-    if (newSubject.length === 0) {
-      //console.log(newSubject);
-      return res.status(400).json({ errors: [{ msg: 'Subject dont exist' }] });
-    }
+		if (newSubject.length === 0) {
+			//console.log(newSubject);
+			return res.status(400).json({ errors: [{ msg: 'Subject dont exist' }] });
+		}
 
-    grade.subjects = grade.subjects.filter(subject => subject.id !== subjectId);
-    //console.log('Updated', grade);
-    const result = await grade.save();
-    res.status(200).json(result);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json('Server error');
-  }
-  //grade = await Class.findByIdAndDelete(req.body.deleteId);
-  //res.status(200).json(grade);
+		grade.subjects = grade.subjects.filter(
+			(subject) => subject.id !== subjectId
+		);
+		//console.log('Updated', grade);
+		const result = await grade.save();
+		res.status(200).json(result);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
+	}
+	//grade = await Class.findByIdAndDelete(req.body.deleteId);
+	//res.status(200).json(grade);
 });
 
-router.patch('/subject', auth, async (req, res) => {
-  //console.log(req.body);
-  const { values, classId, subjectId } = req.body;
+router.patch('/subject', async (req, res) => {
+	//console.log(req.body);
+	const { values, classId, subjectId } = req.body;
 
-  try {
-    const grade = await Class.findOne({ _id: classId });
+	try {
+		const grade = await Class.findOne({ _id: classId });
 
-    if (!grade) {
-      return res.status(400).json({ errors: [{ msg: 'No class exist' }] });
-    }
+		if (!grade) {
+			return res.status(400).json({ errors: [{ msg: 'No class exist' }] });
+		}
 
-    let querySubject = grade.subjects.filter(subject => subject._id == subjectId)[0];
+		let querySubject = grade.subjects.filter(
+			(subject) => subject._id == subjectId
+		)[0];
 
-    if (!querySubject) {
-      return res.status(400).json({ errors: [{ msg: 'Subject dont exist' }] });
-    }
-    querySubject.name = values.name;
-    querySubject.priority = values.priority;
+		if (!querySubject) {
+			return res.status(400).json({ errors: [{ msg: 'Subject dont exist' }] });
+		}
+		querySubject.name = values.name;
+		querySubject.priority = values.priority;
 
-    grade.subjects = grade.subjects.filter(subject => subject.id !== subjectId);
-    grade.subjects = [...grade.subjects, querySubject];
-    grade.subjects.sort((a, b) => a.priority - b.priority);
-    //console.log('Updated', grade);
-    const result = await grade.save();
-    res.status(200).json(result);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).json('Server error');
-  }
+		grade.subjects = grade.subjects.filter(
+			(subject) => subject.id !== subjectId
+		);
+		grade.subjects = [...grade.subjects, querySubject];
+		grade.subjects.sort((a, b) => a.priority - b.priority);
+		//console.log('Updated', grade);
+		const result = await grade.save();
+		res.status(200).json(result);
+	} catch (err) {
+		console.error(err.message);
+		res.status(500).json('Server error');
+	}
 });
 
 // Fees Routes
-router.post('/fee', auth, async (req, res) => {});
+router.post('/fee', async (req, res) => {});
 
 module.exports = router;
