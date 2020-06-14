@@ -2,13 +2,14 @@ import styled from 'styled-components';
 
 export const TabContainer = styled.div`
   width: 100%;
+  max-width: 50rem;
   margin: 50px 0;
 `;
 
 export const TabHeader = styled.div`
   width: 100%;
   height: 45px;
-  background-color: ${props => props.theme.secondary};
+  background-color: ${(props) => props.theme.secondary};
   color: #fff;
   display: flex;
   align-items: center;
@@ -25,7 +26,7 @@ export const TabContent = styled.div`
   width: 100%;
   min-height: 40vh;
   padding: 30px 0 30px 50px;
-  background-color: ${props => props.theme.gradient_simple_primary};
+  background-color: ${(props) => props.theme.gradient_simple_primary};
 `;
 
 export const TabContent_Main = styled.div`
@@ -34,7 +35,7 @@ export const TabContent_Main = styled.div`
 
 export const TabContent_Side = styled.div`
   width: 20vw;
-  border-left: 2px solid ${props => props.theme.secondary};
+  border-left: 2px solid ${(props) => props.theme.secondary};
 
   & > h2 {
     text-align: center;
