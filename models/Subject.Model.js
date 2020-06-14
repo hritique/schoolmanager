@@ -4,11 +4,8 @@ const SubjectSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
-  priority: {
-    type: Number
-  }
 });
 
-module.exports = SubjectSchema;
+module.exports = Subject = mongoose.model('subject', SubjectSchema);
