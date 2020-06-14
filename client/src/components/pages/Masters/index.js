@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import { NavTabs } from '../../NavTabs';
@@ -8,24 +8,29 @@ import Subjects from './Subjects';
 
 const Container = styled.div``;
 
-const Masters = () => {
-	const [tabLinks, setTabLinks] = useState({
-		1: { name: 'Classes', value: '/masters/classes' },
-		2: { name: 'Subjects', value: '/masters/subjects' },
-		3: { name: 'Fees', value: '/masters/fees' },
-		4: { name: 'Assessments', value: '/masters/assessments' },
-	});
+const Masters = (props) => {
+  const [tabLinks, setTabLinks] = useState({
+    1: { name: 'Classes', value: '/masters/classes' },
+    2: { name: 'Subjects', value: '/masters/subjects' },
+    3: { name: 'Fees', value: '/masters/fees' },
+    4: { name: 'Assessments', value: '/masters/assessments' },
+  });
 
-	return (
-		<Container>
-			<NavTabs links={tabLinks} />
+  useEffect(() => {
+    // Redirect to /classes on load
+    props.history.push('/masters/classes');
+  }, []);
 
-			<Switch>
-				<Route path="/masters/classes" component={Classes} />
-				<Route path="/masters/subjects" component={Subjects} />
-			</Switch>
-		</Container>
-	);
+  return (
+    <Container>
+      <NavTabs links={tabLinks} />
+
+      <Switch>
+        <Route path="/masters/classes" component={Classes} />
+        <Route path="/masters/subjects" component={Subjects} />
+      </Switch>
+    </Container>
+  );
 };
 
 export default Masters;
