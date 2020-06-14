@@ -1,44 +1,42 @@
 const jwt = require('jsonwebtoken');
-const config = require('config');
 
 const auth = (req, res, next) => {
-	const token = req.cookies.token || '';
+  const token = req.cookies.token || '';
 
-	if (!token) {
-		req.user = null;
-		return next();
-	}
+  if (!token) {
+    req.user = null;
+    return next();
+  }
 
-	try {
-		const decoded = jwt.verify(token, config.get('jwtSecret'));
-		req.user = decoded.user;
-		return next();
-	} catch (err) {
-		req.user = null;
-		return next();
-	}
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded.user;
+    return next();
+  } catch (err) {
+    req.user = null;
+    return next();
+  }
 };
 
 const protectAPI = (req, res, next) => {
-	console.log('ProtectAPI');
-	if (req.user) {
-		return next();
-	}
-	res.status(401).json({ msg: 'Unauthorized route' });
+  if (req.user) {
+    return next();
+  }
+  res.status(401).json({ msg: 'Unauthorized route' });
 };
 
 const protectApp = (req, res, next) => {
-	if (req.user) {
-		return next();
-	}
-	res.redirect('/login');
+  if (req.user) {
+    return next();
+  }
+  res.redirect('/login');
 };
 
 const isAlreadyAuthenticated = (req, res, next) => {
-	if (!req.user) {
-		return next();
-	}
-	res.redirect('/app');
+  if (!req.user) {
+    return next();
+  }
+  res.redirect('/app');
 };
 
 module.exports = { auth, protectAPI, protectApp, isAlreadyAuthenticated };

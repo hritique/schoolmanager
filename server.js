@@ -1,14 +1,15 @@
 const express = require('express');
-const connectDB = require('./config/db');
+require('dotenv').config({ path: './config/.env' });
+const connectDB = require('./db');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
 const {
-	auth,
-	protectAPI,
-	protectApp,
-	isAlreadyAuthenticated,
+  auth,
+  protectAPI,
+  protectApp,
+  isAlreadyAuthenticated,
 } = require('./middleware/auth');
 
 const app = express();
@@ -39,17 +40,17 @@ app.use('/api/masters', protectAPI, require('./routes/api/masters'));
 app.use('/app', protectApp, express.static('client/build'));
 
 app.get('/app/*', (req, res) => {
-	res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 
 app.use('/', isAlreadyAuthenticated, express.static('static'));
 
 app.get('/', (req, res) =>
-	res.sendFile(path.join(__dirname, 'static', 'index.html'))
+  res.sendFile(path.join(__dirname, 'static', 'index.html'))
 );
 
 app.get('/login', (req, res) =>
-	res.sendFile(path.join(__dirname, 'static', 'login.html'))
+  res.sendFile(path.join(__dirname, 'static', 'login.html'))
 );
 
 const PORT = process.env.PORT || 5000;
